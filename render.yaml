@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: resume-analysis-api
+    name: aarushi-resume-analysis
     env: node
     plan: free
     buildCommand: npm install
