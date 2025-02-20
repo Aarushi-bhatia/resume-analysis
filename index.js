@@ -8,16 +8,19 @@ const authRoutes = require('./routes/auth');
 const resumeRoutes = require('./routes/resume');
 const searchRoutes = require('./routes/search');
 
-
-
 const app = express();
 
 app.use(express.json());
+app.use(express.static('public'));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.use('/api/auth', authRoutes);   
 app.use('/api/resume', resumeRoutes);
 app.use('/api/search', searchRoutes);
