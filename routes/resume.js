@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
+const pdfParse = require('pdf-parse');
 const { verifyToken, encryptData } = require('../middleware/auth');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const Applicant = require('../models/applicant');
@@ -9,10 +11,20 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 router.post('/enrich', verifyToken, async (req, res) => {
   try {
-    const { raw_text } = req.body;
+    const { pdf_url } = req.body;
 
-    if (!raw_text) {
-      return res.status(400).json({ error: 'No resume text provided' });
+    if (!pdf_url) {
+      return res.status(400).json({ error: 'No PDF URL provided' });
+    }
+
+    const response = await axios.get(pdf_url, { responseType: 'arraybuffer' });
+    const pdfBuffer = Buffer.from(response.data);
+
+    const pdfData = await pdfParse(pdfBuffer);
+    const raw_text = pdfData.text;
+
+    if(!raw_text.trim()){
+      return res.status(400).json({ error: 'Failed to extract text from PDF' });
     }
 
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
@@ -42,11 +54,11 @@ router.post('/enrich', verifyToken, async (req, res) => {
     `;
 
     const result = await model.generateContent(prompt);
-    const response = result.response;
+    const aiResponse = result.response;
     let parsedData;
     
     try {
-      const cleanResponse = response.text().replace(/```json\n?|\n?```/g, '').trim();
+      const cleanResponse = aiResponse.text().replace(/```json\n?|\n?```/g, '').trim();
       parsedData = JSON.parse(cleanResponse);
     } catch (parseError) {
       console.error('Parsing error:', parseError);
