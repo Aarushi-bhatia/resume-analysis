@@ -51,7 +51,7 @@
         <h3>1. Login API</h3>
         <p><strong>Endpoint:</strong> <code>POST /api/auth/login</code></p>
         <p><strong>Example:</strong></p>
-        <pre><code>curl -X POST https://resume-analysis-api.onrender.com/api/auth/login \
+        <pre><code>curl -X POST https://aarushi-resume-analysis.onrender.com/api/auth/login \
 -H "Content-Type: application/json" \
 -d '{
     "username": "naval.ravikant",
@@ -64,7 +64,7 @@
         <p><strong>Endpoint:</strong> <code>POST /api/resume/enrich</code></p>
         <p><strong>Requires Authentication Token from Login API</strong></p>
         <p><strong>Example:</strong></p>
-        <pre><code>curl -X POST https://resume-analysis-api.onrender.com/api/resume/enrich \
+        <pre><code>curl -X POST https://aarushi-resume-analysis.onrender.com/api/resume/enrich \
 -H "Authorization: &lt;token&gt;" \
 -H "Content-Type: application/json" \
 -d '{
@@ -75,7 +75,7 @@
         <h3>3. Name Search API</h3>
         <p><strong>Endpoint:</strong> <code>POST /api/search/name</code></p>
         <p><strong>Example:</strong></p>
-        <pre><code>curl -X POST https://resume-analysis-api.onrender.com/api/search/name \
+        <pre><code>curl -X POST https://aarushi-resume-analysis.onrender.com/api/search/name \
 -H "Content-Type: application/json" \
 -d '{
   "name": "name here"
