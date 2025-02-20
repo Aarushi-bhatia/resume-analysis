@@ -24,7 +24,7 @@ POST /api/auth/login
 POST /api/resume/enrich
 Authorization: <token>
 {
-    "raw_text": "Resume content..."
+    "pdf_url": "Resume content..."
 }
 ```
 
